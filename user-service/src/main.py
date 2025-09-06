@@ -2,7 +2,7 @@ import asyncio
 from faststream import FastStream
 from faststream.kafka import KafkaBroker
 
-from src.config import settings
+from src.core.config import settings
 from src.handlers import router
 
 broker = KafkaBroker(f'{settings.KAFKA_HOST}:{settings.KAFKA_PORT}')
