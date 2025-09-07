@@ -4,8 +4,8 @@ from faststream.kafka import KafkaBroker
 
 from src.core.config import settings
 from src.handlers import router
+from src.core.broker import broker
 
-broker = KafkaBroker(f'{settings.KAFKA_HOST}:{settings.KAFKA_PORT}')
 broker.include_router(router)
 
 app = FastStream(broker)

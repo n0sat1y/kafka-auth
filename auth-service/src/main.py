@@ -1,14 +1,23 @@
-import asyncio
-from faststream import FastStream
-from faststream.kafka import KafkaBroker
+from asyncio import Future, wait_for, run
+from typing import Annotated, Any
+from uuid import uuid4
 
-from src.config import settings
+from faststream import FastStream, Context
+from faststream.kafka import KafkaBroker, KafkaMessage
+
+from src.core.broker import broker
 from src.handlers import router
-
-broker = KafkaBroker(f'{settings.KAFKA_HOST}:{settings.KAFKA_PORT}')
-broker.include_router(router)
+from src.core.rpc import rpc_worker
 
 app = FastStream(broker)
+broker.include_router(router)
+
+@app.after_startup
+async def startup():
+    await rpc_worker.start()
+    print('Отправляем данные')
+    data = await rpc_worker.request({'username': 'eblan-kavach', 'password': 'some-pass'}, 'auth_create_user')
+    print(f"{data=}")
 
 if __name__ == "__main__":
-    asyncio.run(app.run())
+    run(app.run())
