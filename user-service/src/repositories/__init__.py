@@ -26,3 +26,16 @@ class UserRepository:
         except Exception as err:
             await self.session.rollback()
             raise err
+        
+    async def update(self, user: UserModel, data_to_update: dict) -> UserModel:
+        try:
+            for key, value in data_to_update.items():
+                setattr(user, key, value)
+            self.session.add(user)
+            await self.session.commit()
+            await self.session.refresh(user)
+            return user
+        except Exception as e:
+            await self.session.rollback()
+            raise e
+    
