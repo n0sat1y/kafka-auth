@@ -27,6 +27,14 @@ class UserRepository:
             await self.session.rollback()
             raise err
         
+    async def get_by_username(self, username: str) -> UserModel:
+        try:
+            res = await self.session.execute(select(UserModel).where(UserModel.username == username))
+            return res.scalar_one_or_none()
+        except Exception as err:
+            await self.session.rollback()
+            raise err
+        
     async def update(self, user: UserModel, data_to_update: dict) -> UserModel:
         try:
             for key, value in data_to_update.items():

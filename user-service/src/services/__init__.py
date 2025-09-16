@@ -22,6 +22,17 @@ class UserService:
             logger.error('Ошибка при получении пользователя', e)
             return 'An error occurred during getting user'
 
+    async def get_by_username(self, username: str) -> dict:
+        try:
+            user = await self.repo.get_by_username(username)
+            if not user:
+                logger.warning('Пользователь не найден: %s', username)
+                return 'User not found'
+            return user.__dict__
+        except Exception as e:
+            logger.error('Ошибка при получении пользователя', e)
+            return 'An error occurred during getting user'
+
     async def create(self, user_schema: CreateUserSchema) -> dict:
         try:
             user_data = user_schema.model_dump()

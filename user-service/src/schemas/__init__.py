@@ -6,6 +6,7 @@ class CreateUserSchema(BaseModel):
 
 class CreateUserResponseSchema(BaseModel):
     id: int
+    password: bytes
 
 class UpdateUserSchema(BaseModel):
     username: str | None = None

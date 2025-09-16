@@ -19,8 +19,14 @@ async def user_service(repo = Depends(user_repository)):
 router = KafkaRouter(prefix=settings.ROUTER_PREFIX)
 
 @router.subscriber('get')
-async def create(id: int, _service = Depends(user_service)) -> CreateUserResponseSchema | str:
+async def get(id: int, _service = Depends(user_service)) -> CreateUserResponseSchema | str:
     response = await _service.get(id)
+    print(response)
+    return response
+
+@router.subscriber('get_by_username')
+async def get_by_username(username: str, _service = Depends(user_service)) -> CreateUserResponseSchema | str:
+    response = await _service.get_by_username(username)
     print(response)
     return response
 
