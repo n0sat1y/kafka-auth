@@ -15,11 +15,6 @@ broker.include_router(router)
 @app.after_startup
 async def startup():
     await rpc_worker.start()
-    print('Отправляем данные')
-    data = await rpc_worker.request({'username': 'eblan-kavach', 'password': 'some-pass'}, 'auth_create_user')
-    print(f"{data=}")
-    data = await rpc_worker.request({'username': 'eblan-kavach', 'password': 'some-pass'}, 'auth_user')
-    print(f"{data=}")
 
 if __name__ == "__main__":
     run(app.run())

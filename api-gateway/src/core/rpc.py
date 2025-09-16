@@ -13,7 +13,7 @@ class RPCWorker:
         self.broker = broker
         self.reply_topic = reply_topic
 
-        self.subscriber = broker.subscriber(reply_topic)
+        self.subscriber = broker.subscriber(reply_topic, include_in_schema=False)
         self.subscriber(self._handle_responses)
 
     async def start(self) -> None:
